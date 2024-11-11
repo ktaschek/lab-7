@@ -1,9 +1,17 @@
 ---
 title: "Lab 7: Functions + Fish"
-author: "Your name here!"
-format: html
+author: "Kyle Taschek"
+format: 
+  html:  
+    embed-resources: true
+    code-tools: true
+    toc: true
 editor: source
-embed-resources: true
+execute: 
+  echo: true
+  warning: false
+  error: true
+code-fold: true
 ---
 
 The goal of this lab is learn more about exploring missing data and writing
@@ -11,7 +19,14 @@ modular code.
 
 ```{r}
 #| label: setup
+#| message: false
+#| warning: false
 
+library(tidyverse)
+library(here)
+library(forcats)
+
+fish_csv <- read_csv(here::here("data","BlackfootFish.csv"))
 
 ```
 
@@ -45,12 +60,90 @@ measurement errors.
 ```{r}
 #| label: find-missing-values
 
+library(dplyr)
+
+observations_with_missing <- fish_csv |>
+  filter(
+    if_any(
+      everything(),
+      is.na
+      )
+    ) |>
+  summarise(total_observations_with_missing = n()) |>
+  pull(total_observations_with_missing)
+
+variables_with_missing <- fish_csv |>
+  summarise(
+    across(
+      everything(),
+      ~ any(is.na(.))
+      )
+    ) |>
+  pivot_longer(
+    cols = everything(),
+    names_to = "variable",
+    values_to = "has_missing"
+    ) |>
+  filter(has_missing) |>
+  pull(variable)
+
+list(
+  obs_missing = observations_with_missing,
+  vars_w_missing = variables_with_missing
+)
+
+
+
+
+
 ```
 
 **2. Create ONE thoughtful visualization that explores the frequency of missing values across the different years, sections, and trips.**
 
 ```{r}
 #| label: visual-of-missing-values-over-time
+
+
+fish_csv |>
+  group_by(section, year, trip) |>
+  mutate(
+    num_missing = sum(if_any(
+      everything(),
+      is.na
+      )),
+    total_count = n(),
+    percent_missing = (100 * num_missing) / total_count,
+    .groups = "drop"
+    ) |>
+  ggplot(
+    mapping = aes(
+      x = year,
+      y = section,
+      fill = percent_missing
+    )
+  ) +
+  geom_tile() +
+  scale_fill_gradient(
+    low = "grey",
+    high = "steelblue"
+  ) +
+  facet_wrap(~ trip) +
+  labs(
+    x = "Year",
+    y = "",
+    subtitle = "Section",
+    title = "Missing Values by section and trip over time from the Blackfoot Trout data from Helena, Montana",
+    fill = "Number Missing (%)"
+
+  ) +
+  theme(
+    axis.text.x = element_text(
+      angle = 45,
+      hjust = 1
+    ))
+
+
+  
 
 ```
 
@@ -72,7 +165,7 @@ I might write the following `R` code to carry out the rescaling procedure for th
 #| echo: true
 #| eval: false
 
-fish <- fish |> 
+fish <- fish_csv |> 
   mutate(length = (length - min(length, na.rm = TRUE)) / 
            (max(length, na.rm = TRUE) - min(length, na.rm = TRUE)), 
          weight = (weight - min(weight, na.rm = TRUE)) / 
@@ -84,7 +177,12 @@ understand the intent of the process. *Additionally, it can make it very difficu
 
 **3. What is the mistake I made in the above rescaling code?**
 
-
+The mistake is the use of the length variable to calculate the rescaled weight.
+It should be corrected to:
+...
+`weight = (weight - min(weight, na.rm = TRUE)) / 
+           (max(weight, na.rm = TRUE) - min(weight, na.rm = TRUE)))`
+           
 When you find yourself copy-pasting lines of code, it's time to write a
 function, instead!
 
@@ -95,6 +193,18 @@ function, instead!
 
 ```{r}
 #| label: write-rescale-function
+
+rescale_01 <- function(vector){
+  if (!is.numeric(vector)) {
+    stop("Error: The input vector must be numeric.")
+  }
+  if (length(vector) <= 1) {
+    stop("Error: The input vector must have more than one element.")
+  }
+  min_max <- range(vector, na.rm = TRUE)
+  
+  return((vector - min_max[1]) / (min_max[2] - min_max[1]))
+}
 
 ```
 
@@ -143,14 +253,26 @@ statement in order to create a `length_scaled` variable.
 
 ```{r}
 #| label: compare-original-with-rescaled-lengths
+#| fig-align: center
+#| layout-ncol: 2
+#| fig-cap: "1: Scaled vs Rescaled Graphs of Fish Length Counts Caught Between 1989-2006 in Helena, Montana"
 
-fish |>  
+fish_csv |>  
   ggplot(aes(x = length)) + 
   geom_histogram(binwidth = 45) +
   labs(x = "Original Values of Fish Length (mm)") +
   scale_y_continuous(limits = c(0,4000))
 
 # Code for Q7 plot.
+fish_csv |>  
+  mutate(length_scaled = rescale_01(length)) |> 
+  ggplot(mapping = aes(x = length_scaled)) + 
+  geom_histogram( binwidth = 0.05, fill = "blue", alpha = 0.5) +
+  labs(
+    x = "Rescaled Values of Fish Length",
+    y = "Count") +
+  scale_y_continuous(limits = c(0, 4000))
+
 
 ```
 
@@ -184,6 +306,25 @@ section of R for Data Science!
 ```{r}
 #| label: rescale-data-frame-function
 
+rescale_column <- function(df, columns) {
+  if (!is.data.frame(df)) {
+    stop("The input `df` must be a data frame.")
+  }
+  if (!is.character(columns) || !all(columns %in% colnames(df))) {
+    stop("`columns` must be a character vector of valid column names in `df`.")
+  }
+  
+  columns <- rlang::enquo(columns)
+  
+  return(df |>
+    mutate(across(
+      !!columns,
+      rescale_01,
+      .names = "{.col}_rescaled"
+      )
+    ))
+}
+
 ```
 
 **9. Use your `rescale_column()` function to rescale *both* the `length` and `weight` columns.**
@@ -194,5 +335,7 @@ I expect that you carry out this process by calling the `rescale_column()` funct
 
 ```{r}
 #| label: rescale-two-columns
+
+rescale_column(fish_csv, c("length", "weight"))
 
 ```
