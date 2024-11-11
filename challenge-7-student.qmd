@@ -9,7 +9,14 @@ embed-resources: true
 
 ```{r}
 #| label: setup
+#| message: false
+#| warning: false
 
+library(tidyverse)
+library(here)
+library(forcats)
+
+fish_csv <- read_csv(here::here("data","BlackfootFish.csv"))
 
 ```
 
@@ -25,6 +32,9 @@ $$\text{condition index} = \frac{weight}{length^3} \times 100$$
 
 ```{r}
 #| label: transform-data-to-have-correct-units
+
+fish <- fish_csv |>
+  mutate(length = length / 10)
 
 ```
 
@@ -43,12 +53,35 @@ If you are struggling with the structure of your function, I would suggest readi
 ```{r}
 #| label: function-to-change-impossible-measurements-to-NA
 
+set_bounds_on_data <- function(vector, min, max){
+  if (!is.numeric(vector)) {
+    stop("Error: The input vector must be numeric.")
+  }
+  if (!is.numeric(min) | !is.numeric(max)) {
+    stop("Error: The input min and max must be numeric.")
+  }
+  if (length(vector) <= 1) {
+    stop("Error: The input vector must have more than one element.")
+  }
+  
+  return(ifelse(
+    vector < min | vector > max,
+    NA,
+    vector
+    ))
+}
 ```
 
 **3. After consulting the [Montana Record Table](https://fwp.mt.gov/fish/anglingData/records) for the four species of trout included in these data, I have conjectured that it is unlikely to have measurements for fish below 5 cm and above 80 cm in length or below 10 g and above 4,000 g in weight. Use your function to modify the `length` and `weight` columns of the `fish` dataset based on my cutoffs.**
 
 ```{r}
 #| label: modify-impossible-values-of-length-weight
+
+fish <- fish |>
+  mutate(
+    length = set_bounds_on_data(length, 5, 80),
+    weight = set_bounds_on_data(weight, 10, 4000)
+  )
 
 ```
 
@@ -63,6 +96,22 @@ dataset and variable names as inputs)!
 ```{r}
 #| label: condition-function
 
+calculate_fish_index <- function(weight_vector, len_vector){
+  if (!is.numeric(weight_vector) || !is.numeric(len_vector)) {
+    stop("Error: Both weight and length inputs must be numeric vectors.")
+  }
+  if (length(weight_vector) != length(len_vector)) {
+    stop("Error: The weight and length vectors must be of the same length.")
+  }
+  if (any(len_vector == 0, na.rm = TRUE)) {
+    stop("Error: Length values must not be zero.")
+  }
+  
+  condition_index <- weight_vector / (len_vector ^ 3)
+  
+  return(condition_index)
+}
+
 ```
 
 **4. Make a thoughtful visualization of how fish conditions have varied over the duration of this study.**
@@ -76,4 +125,26 @@ dataset and variable names as inputs)!
 ```{r}
 #| label: condition-indices-over-time
 
+fish |>
+  mutate(
+    condition_index = calculate_fish_index(weight, length)  # Calculate condition index
+  ) |>
+ggplot(mapping = aes(
+  x = year,
+  y = condition_index,
+  color = species
+  )) +
+geom_jitter(aes(shape = species),
+            size = 2,
+            alpha = 0.5) + 
+labs(
+  title = "Blackfoot Fish Condition Indices Over Time by Species",
+  x = "Year",
+  y = "Condition Index",
+  color = "Fish Species",
+  shape = "Fish Species"
+) +
+theme(
+  axis.text.x = element_text(angle = 45, hjust = 1), 
+)
 ```
