@@ -3299,44 +3299,51 @@ You should use <code>across()</code>!
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Previous Submission</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>observations_with_missing <span class="ot">&lt;-</span> fish_csv <span class="sc">|&gt;</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">if_any</span>(</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">everything</span>(),</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>      is.na</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_observations_with_missing =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(total_observations_with_missing)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>variables_with_missing <span class="ot">&lt;-</span> fish_csv <span class="sc">|&gt;</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">everything</span>(),</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> <span class="fu">any</span>(<span class="fu">is.na</span>(.))</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">everything</span>(),</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">&quot;variable&quot;</span>,</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">&quot;has_missing&quot;</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(has_missing) <span class="sc">|&gt;</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(variable)</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">obs_missing =</span> observations_with_missing,</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">vars_w_missing =</span> variables_with_missing</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># observations_with_missing &lt;- fish_csv |&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#     if_any(</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       everything(),</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#       is.na</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#       )</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#     ) |&gt;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   summarise(total_observations_with_missing = n()) |&gt;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#   pull(total_observations_with_missing)</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># variables_with_missing &lt;- fish_csv |&gt;</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#   summarise(</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#     across(</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#       everything(),</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#       ~ any(is.na(.))</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#       )</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#     ) |&gt;</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#   pivot_longer(</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#     cols = everything(),</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#     names_to = &quot;variable&quot;,</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#     values_to = &quot;has_missing&quot;</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#     ) |&gt;</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(has_missing) |&gt;</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">#   pull(variable)</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co"># list(</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co">#   obs_missing = observations_with_missing,</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co">#   vars_w_missing = variables_with_missing</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>fish_csv <span class="sc">|&gt;</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>      <span class="fu">everything</span>(),</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(.))</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>$obs_missing
-[1] 1796
-
-$vars_w_missing
-[1] &quot;weight&quot;</code></pre>
+<pre><code># A tibble: 1 × 7
+   trip  mark length weight  year section species
+  &lt;int&gt; &lt;int&gt;  &lt;int&gt;  &lt;int&gt; &lt;int&gt;   &lt;int&gt;   &lt;int&gt;
+1     0     0      0   1796     0       0       0</code></pre>
 </div>
 </div>
 <p><strong>2. Create ONE thoughtful visualization that explores the frequency of missing values across the different years, sections, and trips.</strong></p>
@@ -3344,47 +3351,43 @@ $vars_w_missing
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fish_csv <span class="sc">|&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(section, year, trip) <span class="sc">|&gt;</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">num_missing =</span> <span class="fu">sum</span>(<span class="fu">if_any</span>(</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">everything</span>(),</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>      is.na</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>      )),</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_count =</span> <span class="fu">n</span>(),</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_missing =</span> (<span class="dv">100</span> <span class="sc">*</span> num_missing) <span class="sc">/</span> total_count,</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> year,</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> section,</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> percent_missing</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">low =</span> <span class="st">&quot;grey&quot;</span>,</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">high =</span> <span class="st">&quot;steelblue&quot;</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> trip) <span class="sc">+</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Year&quot;</span>,</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;&quot;</span>,</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">&quot;Section&quot;</span>,</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Missing Values by section and trip over time from the Blackfoot Trout data from Helena, Montana&quot;</span>,</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;Number Missing (%)&quot;</span></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>      <span class="at">angle =</span> <span class="dv">45</span>,</span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">hjust =</span> <span class="dv">1</span></span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">trip =</span> <span class="fu">fct_recode</span>(<span class="fu">as.factor</span>(trip),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Trip 1&quot;</span> <span class="ot">=</span> <span class="st">&quot;1&quot;</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Trip 2&quot;</span> <span class="ot">=</span> <span class="st">&quot;2&quot;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">if_any</span>(<span class="fu">everything</span>(), is.na)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> year,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> section</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">stat =</span> <span class="st">&quot;count&quot;</span>,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="st">&quot;stack&quot;</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> trip) <span class="sc">+</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Year&quot;</span>,</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">&quot;Section&quot;</span>,</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Missing Values by section and trip over time from the Blackfoot Trout data from Helena, Montana&quot;</span>,</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;Number Missing (%)&quot;</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">8</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img role="img" src="data:image/png;base64,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AhSgagygAAUoQNUYQAEKUICqMYACFKAAVWMABShAAarGAApQgAJUjQEUoAAFqBoDKEABClA1BlCAAhSgagygAAUoQNUYQAEKUICqMYACFKAAVWMABShAAarGAApQgAJUjQEUoAAFqBoDKEABClA1BlCAAhSgagygAAUoQNUYQAEKUICqMYACFKAAVWMABShAAarGAApQgAJUjQEUoAAFqBoDKEABClA1BlCAAhSgagygAAUoQNUYQAEKUICqMYACFKAAVWMABShAAarGAApQgAJUjQEUoAAFqBoDKEABClA1BlCAAhSgagygAAUoQNUYQAEKUICqMYACFKAAVWMABShAAarGAApQgAJUjQEUoAAFqBoDKEABClA1BlCAAhSgagygAAUoQNUYQAEKUICqMYACFKAAVWMABShAAarGAApQgAJUjQEUoAAFqBoDKEABClA1BlCAAhSgagygAAUoQNUYQAEKUICqMYACFKAAVWMABShAAarGAApQgAJUjQEUoAAFqBoDKEABClA1BlCAAhSgagygAAUoQNUYQAEKUICqMYACFKAAVWMABShAAarGAApQgAJUjQEUoAAFqBoDKEABClA1BlCAAhSgagygAAUoQNUYQAEKUICqMYACFKAAVWMABShAAarGAApQgAJUjQEUoAAFqBoDKEABClA1BlCAAhSgagygAAUoQNUYQAEKUICqMYACFKAAVWMABShAAarGAApQgAJUjQEUoAAFqBoDKEABClA1BlCAAhSgagygAAUoQNUYQAEKUICqMYACFKAAVWMABShAAarGAApQgAJUjQEUoAAFqBoDKEABClA1BlCAAhSgauxsgE5WvcHnbao32GOQllH2GGTV7XF/Hj3Ic1bpqQPo3DbVG7zwAgXoilEA2mMAndumeoMXXqAAXTEKQHsMoHPbVG/wwgsUoCtGAWiPAXRum+oNXniBAnTFKADtMYDObVO9wQsvUICuGAWgPQbQuW2qN3jhBQrQFaMAtMcAOrdN9QYvvEABumIUgPYYQOe2qd7ghRcoQFeMAtAeA+jcNtUbvPACBeiKUQDaYwCd26Z6gxdeoABdMQpAewygc9tUb/DCCxSgK0YBaI8BdG6b6g1eeIECdMUoAO0xgM5tU73BCy9QgK4YBaA9BtC5bao3eOEFCtAVowC0xwA6t031Bi+8QAG6YhSA9hhA57ap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" class="img-fluid figure-img" width="672"></p>
+<p><img role="img" src="data:image/png;base64,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" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -3519,7 +3522,7 @@ Warning
 <span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Count&quot;</span>) <span class="sc">+</span></span>
 <span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4000</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-ncol="2" data-layout-align="center">
+<div class="cell quarto-layout-panel" data-layout-align="center" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <div class="quarto-figure quarto-figure-center">
@@ -4178,72 +4181,72 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb15-65"><a href="#cb15-65" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: find-missing-values</span></span>
 <span id="cb15-66"><a href="#cb15-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-67"><a href="#cb15-67" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb15-67"><a href="#cb15-67" aria-hidden="true" tabindex="-1"></a><span class="co"># Previous Submission</span></span>
 <span id="cb15-68"><a href="#cb15-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-69"><a href="#cb15-69" aria-hidden="true" tabindex="-1"></a>observations_with_missing <span class="ot">&lt;-</span> fish_csv <span class="sc">|&gt;</span></span>
-<span id="cb15-70"><a href="#cb15-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
-<span id="cb15-71"><a href="#cb15-71" aria-hidden="true" tabindex="-1"></a>    <span class="fu">if_any</span>(</span>
-<span id="cb15-72"><a href="#cb15-72" aria-hidden="true" tabindex="-1"></a>      <span class="fu">everything</span>(),</span>
-<span id="cb15-73"><a href="#cb15-73" aria-hidden="true" tabindex="-1"></a>      is.na</span>
-<span id="cb15-74"><a href="#cb15-74" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb15-75"><a href="#cb15-75" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb15-76"><a href="#cb15-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_observations_with_missing =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb15-77"><a href="#cb15-77" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(total_observations_with_missing)</span>
-<span id="cb15-78"><a href="#cb15-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-79"><a href="#cb15-79" aria-hidden="true" tabindex="-1"></a>variables_with_missing <span class="ot">&lt;-</span> fish_csv <span class="sc">|&gt;</span></span>
-<span id="cb15-80"><a href="#cb15-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb15-81"><a href="#cb15-81" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
-<span id="cb15-82"><a href="#cb15-82" aria-hidden="true" tabindex="-1"></a>      <span class="fu">everything</span>(),</span>
-<span id="cb15-83"><a href="#cb15-83" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> <span class="fu">any</span>(<span class="fu">is.na</span>(.))</span>
-<span id="cb15-84"><a href="#cb15-84" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb15-85"><a href="#cb15-85" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb15-86"><a href="#cb15-86" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb15-87"><a href="#cb15-87" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">everything</span>(),</span>
-<span id="cb15-88"><a href="#cb15-88" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">&quot;variable&quot;</span>,</span>
-<span id="cb15-89"><a href="#cb15-89" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">&quot;has_missing&quot;</span></span>
-<span id="cb15-90"><a href="#cb15-90" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb15-91"><a href="#cb15-91" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(has_missing) <span class="sc">|&gt;</span></span>
-<span id="cb15-92"><a href="#cb15-92" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(variable)</span>
-<span id="cb15-93"><a href="#cb15-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-94"><a href="#cb15-94" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(</span>
-<span id="cb15-95"><a href="#cb15-95" aria-hidden="true" tabindex="-1"></a>  <span class="at">obs_missing =</span> observations_with_missing,</span>
-<span id="cb15-96"><a href="#cb15-96" aria-hidden="true" tabindex="-1"></a>  <span class="at">vars_w_missing =</span> variables_with_missing</span>
-<span id="cb15-97"><a href="#cb15-97" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-69"><a href="#cb15-69" aria-hidden="true" tabindex="-1"></a><span class="co"># observations_with_missing &lt;- fish_csv |&gt;</span></span>
+<span id="cb15-70"><a href="#cb15-70" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(</span></span>
+<span id="cb15-71"><a href="#cb15-71" aria-hidden="true" tabindex="-1"></a><span class="co">#     if_any(</span></span>
+<span id="cb15-72"><a href="#cb15-72" aria-hidden="true" tabindex="-1"></a><span class="co">#       everything(),</span></span>
+<span id="cb15-73"><a href="#cb15-73" aria-hidden="true" tabindex="-1"></a><span class="co">#       is.na</span></span>
+<span id="cb15-74"><a href="#cb15-74" aria-hidden="true" tabindex="-1"></a><span class="co">#       )</span></span>
+<span id="cb15-75"><a href="#cb15-75" aria-hidden="true" tabindex="-1"></a><span class="co">#     ) |&gt;</span></span>
+<span id="cb15-76"><a href="#cb15-76" aria-hidden="true" tabindex="-1"></a><span class="co">#   summarise(total_observations_with_missing = n()) |&gt;</span></span>
+<span id="cb15-77"><a href="#cb15-77" aria-hidden="true" tabindex="-1"></a><span class="co">#   pull(total_observations_with_missing)</span></span>
+<span id="cb15-78"><a href="#cb15-78" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb15-79"><a href="#cb15-79" aria-hidden="true" tabindex="-1"></a><span class="co"># variables_with_missing &lt;- fish_csv |&gt;</span></span>
+<span id="cb15-80"><a href="#cb15-80" aria-hidden="true" tabindex="-1"></a><span class="co">#   summarise(</span></span>
+<span id="cb15-81"><a href="#cb15-81" aria-hidden="true" tabindex="-1"></a><span class="co">#     across(</span></span>
+<span id="cb15-82"><a href="#cb15-82" aria-hidden="true" tabindex="-1"></a><span class="co">#       everything(),</span></span>
+<span id="cb15-83"><a href="#cb15-83" aria-hidden="true" tabindex="-1"></a><span class="co">#       ~ any(is.na(.))</span></span>
+<span id="cb15-84"><a href="#cb15-84" aria-hidden="true" tabindex="-1"></a><span class="co">#       )</span></span>
+<span id="cb15-85"><a href="#cb15-85" aria-hidden="true" tabindex="-1"></a><span class="co">#     ) |&gt;</span></span>
+<span id="cb15-86"><a href="#cb15-86" aria-hidden="true" tabindex="-1"></a><span class="co">#   pivot_longer(</span></span>
+<span id="cb15-87"><a href="#cb15-87" aria-hidden="true" tabindex="-1"></a><span class="co">#     cols = everything(),</span></span>
+<span id="cb15-88"><a href="#cb15-88" aria-hidden="true" tabindex="-1"></a><span class="co">#     names_to = &quot;variable&quot;,</span></span>
+<span id="cb15-89"><a href="#cb15-89" aria-hidden="true" tabindex="-1"></a><span class="co">#     values_to = &quot;has_missing&quot;</span></span>
+<span id="cb15-90"><a href="#cb15-90" aria-hidden="true" tabindex="-1"></a><span class="co">#     ) |&gt;</span></span>
+<span id="cb15-91"><a href="#cb15-91" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(has_missing) |&gt;</span></span>
+<span id="cb15-92"><a href="#cb15-92" aria-hidden="true" tabindex="-1"></a><span class="co">#   pull(variable)</span></span>
+<span id="cb15-93"><a href="#cb15-93" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb15-94"><a href="#cb15-94" aria-hidden="true" tabindex="-1"></a><span class="co"># list(</span></span>
+<span id="cb15-95"><a href="#cb15-95" aria-hidden="true" tabindex="-1"></a><span class="co">#   obs_missing = observations_with_missing,</span></span>
+<span id="cb15-96"><a href="#cb15-96" aria-hidden="true" tabindex="-1"></a><span class="co">#   vars_w_missing = variables_with_missing</span></span>
+<span id="cb15-97"><a href="#cb15-97" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
 <span id="cb15-98"><a href="#cb15-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-99"><a href="#cb15-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-100"><a href="#cb15-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-101"><a href="#cb15-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-102"><a href="#cb15-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-103"><a href="#cb15-103" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-104"><a href="#cb15-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-105"><a href="#cb15-105" aria-hidden="true" tabindex="-1"></a>**2. Create ONE thoughtful visualization that explores the frequency of missing values across the different years, sections, and trips.**</span>
-<span id="cb15-106"><a href="#cb15-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-109"><a href="#cb15-109" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-110"><a href="#cb15-110" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: visual-of-missing-values-over-time</span></span>
-<span id="cb15-111"><a href="#cb15-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-112"><a href="#cb15-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-113"><a href="#cb15-113" aria-hidden="true" tabindex="-1"></a>fish_csv <span class="sc">|&gt;</span></span>
-<span id="cb15-114"><a href="#cb15-114" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(section, year, trip) <span class="sc">|&gt;</span></span>
-<span id="cb15-115"><a href="#cb15-115" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb15-116"><a href="#cb15-116" aria-hidden="true" tabindex="-1"></a>    <span class="at">num_missing =</span> <span class="fu">sum</span>(<span class="fu">if_any</span>(</span>
-<span id="cb15-117"><a href="#cb15-117" aria-hidden="true" tabindex="-1"></a>      <span class="fu">everything</span>(),</span>
-<span id="cb15-118"><a href="#cb15-118" aria-hidden="true" tabindex="-1"></a>      is.na</span>
-<span id="cb15-119"><a href="#cb15-119" aria-hidden="true" tabindex="-1"></a>      )),</span>
-<span id="cb15-120"><a href="#cb15-120" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_count =</span> <span class="fu">n</span>(),</span>
-<span id="cb15-121"><a href="#cb15-121" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_missing =</span> (<span class="dv">100</span> <span class="sc">*</span> num_missing) <span class="sc">/</span> total_count,</span>
-<span id="cb15-122"><a href="#cb15-122" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span></span>
-<span id="cb15-123"><a href="#cb15-123" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb15-124"><a href="#cb15-124" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
-<span id="cb15-125"><a href="#cb15-125" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(</span>
-<span id="cb15-126"><a href="#cb15-126" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> year,</span>
-<span id="cb15-127"><a href="#cb15-127" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> section,</span>
-<span id="cb15-128"><a href="#cb15-128" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> percent_missing</span>
-<span id="cb15-129"><a href="#cb15-129" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb15-130"><a href="#cb15-130" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb15-131"><a href="#cb15-131" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
-<span id="cb15-132"><a href="#cb15-132" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(</span>
-<span id="cb15-133"><a href="#cb15-133" aria-hidden="true" tabindex="-1"></a>    <span class="at">low =</span> <span class="st">&quot;grey&quot;</span>,</span>
-<span id="cb15-134"><a href="#cb15-134" aria-hidden="true" tabindex="-1"></a>    <span class="at">high =</span> <span class="st">&quot;steelblue&quot;</span></span>
+<span id="cb15-99"><a href="#cb15-99" aria-hidden="true" tabindex="-1"></a>fish_csv <span class="sc">|&gt;</span></span>
+<span id="cb15-100"><a href="#cb15-100" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb15-101"><a href="#cb15-101" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
+<span id="cb15-102"><a href="#cb15-102" aria-hidden="true" tabindex="-1"></a>      <span class="fu">everything</span>(),</span>
+<span id="cb15-103"><a href="#cb15-103" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(.))</span>
+<span id="cb15-104"><a href="#cb15-104" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb15-105"><a href="#cb15-105" aria-hidden="true" tabindex="-1"></a>  ) </span>
+<span id="cb15-106"><a href="#cb15-106" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-107"><a href="#cb15-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-108"><a href="#cb15-108" aria-hidden="true" tabindex="-1"></a>**2. Create ONE thoughtful visualization that explores the frequency of missing values across the different years, sections, and trips.**</span>
+<span id="cb15-109"><a href="#cb15-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-112"><a href="#cb15-112" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-113"><a href="#cb15-113" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: visual-of-missing-values-over-time</span></span>
+<span id="cb15-114"><a href="#cb15-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-115"><a href="#cb15-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-116"><a href="#cb15-116" aria-hidden="true" tabindex="-1"></a>fish_csv <span class="sc">|&gt;</span></span>
+<span id="cb15-117"><a href="#cb15-117" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb15-118"><a href="#cb15-118" aria-hidden="true" tabindex="-1"></a>    <span class="at">trip =</span> <span class="fu">fct_recode</span>(<span class="fu">as.factor</span>(trip),</span>
+<span id="cb15-119"><a href="#cb15-119" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Trip 1&quot;</span> <span class="ot">=</span> <span class="st">&quot;1&quot;</span>,</span>
+<span id="cb15-120"><a href="#cb15-120" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Trip 2&quot;</span> <span class="ot">=</span> <span class="st">&quot;2&quot;</span></span>
+<span id="cb15-121"><a href="#cb15-121" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb15-122"><a href="#cb15-122" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb15-123"><a href="#cb15-123" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb15-124"><a href="#cb15-124" aria-hidden="true" tabindex="-1"></a>    <span class="fu">if_any</span>(<span class="fu">everything</span>(), is.na)</span>
+<span id="cb15-125"><a href="#cb15-125" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb15-126"><a href="#cb15-126" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb15-127"><a href="#cb15-127" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(</span>
+<span id="cb15-128"><a href="#cb15-128" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> year,</span>
+<span id="cb15-129"><a href="#cb15-129" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> section</span>
+<span id="cb15-130"><a href="#cb15-130" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb15-131"><a href="#cb15-131" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb15-132"><a href="#cb15-132" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(</span>
+<span id="cb15-133"><a href="#cb15-133" aria-hidden="true" tabindex="-1"></a>    <span class="at">stat =</span> <span class="st">&quot;count&quot;</span>,</span>
+<span id="cb15-134"><a href="#cb15-134" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="st">&quot;stack&quot;</span></span>
 <span id="cb15-135"><a href="#cb15-135" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb15-136"><a href="#cb15-136" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> trip) <span class="sc">+</span></span>
 <span id="cb15-137"><a href="#cb15-137" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
@@ -4256,207 +4259,206 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb15-144"><a href="#cb15-144" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb15-145"><a href="#cb15-145" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
 <span id="cb15-146"><a href="#cb15-146" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(</span>
-<span id="cb15-147"><a href="#cb15-147" aria-hidden="true" tabindex="-1"></a>      <span class="at">angle =</span> <span class="dv">45</span>,</span>
-<span id="cb15-148"><a href="#cb15-148" aria-hidden="true" tabindex="-1"></a>      <span class="at">hjust =</span> <span class="dv">1</span></span>
-<span id="cb15-149"><a href="#cb15-149" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb15-147"><a href="#cb15-147" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">8</span></span>
+<span id="cb15-148"><a href="#cb15-148" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb15-149"><a href="#cb15-149" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-150"><a href="#cb15-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-151"><a href="#cb15-151" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-152"><a href="#cb15-152" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb15-153"><a href="#cb15-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-154"><a href="#cb15-154" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-155"><a href="#cb15-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-156"><a href="#cb15-156" aria-hidden="true" tabindex="-1"></a><span class="fu">## Rescaling the Data</span></span>
-<span id="cb15-157"><a href="#cb15-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-158"><a href="#cb15-158" aria-hidden="true" tabindex="-1"></a>If I wanted to rescale every quantitative variable in my dataset so that they</span>
-<span id="cb15-159"><a href="#cb15-159" aria-hidden="true" tabindex="-1"></a>only have values between 0 and 1, I could use this formula:</span>
-<span id="cb15-160"><a href="#cb15-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-161"><a href="#cb15-161" aria-hidden="true" tabindex="-1"></a>&lt;/br&gt;</span>
-<span id="cb15-162"><a href="#cb15-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-163"><a href="#cb15-163" aria-hidden="true" tabindex="-1"></a>$$y_{scaled} = \frac{y_i - min<span class="sc">\{</span>y_1, y_2,..., y_n<span class="sc">\}</span>}{max<span class="sc">\{</span>y_1, y_2,..., y_n<span class="sc">\}</span> </span>
-<span id="cb15-164"><a href="#cb15-164" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>min<span class="sc">\{</span>y_1, y_2,..., y_n<span class="sc">\}</span>}$$</span>
-<span id="cb15-165"><a href="#cb15-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-166"><a href="#cb15-166" aria-hidden="true" tabindex="-1"></a>&lt;/br&gt;</span>
-<span id="cb15-167"><a href="#cb15-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-168"><a href="#cb15-168" aria-hidden="true" tabindex="-1"></a>I might write the following <span class="in">`R`</span> code to carry out the rescaling procedure for the <span class="in">`length`</span> and <span class="in">`weight`</span> columns of the <span class="in">`BlackfoorFish`</span> data:</span>
-<span id="cb15-169"><a href="#cb15-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-172"><a href="#cb15-172" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-173"><a href="#cb15-173" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
-<span id="cb15-174"><a href="#cb15-174" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb15-175"><a href="#cb15-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-176"><a href="#cb15-176" aria-hidden="true" tabindex="-1"></a>fish <span class="ot">&lt;-</span> fish_csv <span class="sc">|&gt;</span> </span>
-<span id="cb15-177"><a href="#cb15-177" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">length =</span> (length <span class="sc">-</span> <span class="fu">min</span>(length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> </span>
-<span id="cb15-178"><a href="#cb15-178" aria-hidden="true" tabindex="-1"></a>           (<span class="fu">max</span>(length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">-</span> <span class="fu">min</span>(length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)), </span>
-<span id="cb15-179"><a href="#cb15-179" aria-hidden="true" tabindex="-1"></a>         <span class="at">weight =</span> (weight <span class="sc">-</span> <span class="fu">min</span>(weight, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> </span>
-<span id="cb15-180"><a href="#cb15-180" aria-hidden="true" tabindex="-1"></a>           (<span class="fu">max</span>(weight, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">-</span> <span class="fu">min</span>(length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)))</span>
-<span id="cb15-181"><a href="#cb15-181" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-182"><a href="#cb15-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-183"><a href="#cb15-183" aria-hidden="true" tabindex="-1"></a>This process of duplicating an action multiple times can make it difficult to</span>
-<span id="cb15-184"><a href="#cb15-184" aria-hidden="true" tabindex="-1"></a>understand the intent of the process. *Additionally, it can make it very difficult to spot mistakes.*</span>
-<span id="cb15-185"><a href="#cb15-185" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-186"><a href="#cb15-186" aria-hidden="true" tabindex="-1"></a>**3. What is the mistake I made in the above rescaling code?**</span>
-<span id="cb15-187"><a href="#cb15-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-188"><a href="#cb15-188" aria-hidden="true" tabindex="-1"></a>The mistake is the use of the length variable to calculate the rescaled weight.</span>
-<span id="cb15-189"><a href="#cb15-189" aria-hidden="true" tabindex="-1"></a>It should be corrected to:</span>
-<span id="cb15-190"><a href="#cb15-190" aria-hidden="true" tabindex="-1"></a>...</span>
-<span id="cb15-191"><a href="#cb15-191" aria-hidden="true" tabindex="-1"></a>`weight = (weight - min(weight, na.rm = TRUE)) / </span>
-<span id="cb15-192"><a href="#cb15-192" aria-hidden="true" tabindex="-1"></a>           (max(weight, na.rm = TRUE) - min(weight, na.rm = TRUE)))`</span>
-<span id="cb15-193"><a href="#cb15-193" aria-hidden="true" tabindex="-1"></a>           </span>
-<span id="cb15-194"><a href="#cb15-194" aria-hidden="true" tabindex="-1"></a>When you find yourself copy-pasting lines of code, it&#39;s time to write a</span>
-<span id="cb15-195"><a href="#cb15-195" aria-hidden="true" tabindex="-1"></a>function, instead!</span>
-<span id="cb15-196"><a href="#cb15-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-197"><a href="#cb15-197" aria-hidden="true" tabindex="-1"></a>**4. Transform the repeated process above into a `rescale_01()` function. Your function should...**</span>
-<span id="cb15-198"><a href="#cb15-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-199"><a href="#cb15-199" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span>**... take a single vector as input.**</span>
-<span id="cb15-200"><a href="#cb15-200" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span>**... return the rescaled vector.**</span>
-<span id="cb15-201"><a href="#cb15-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-204"><a href="#cb15-204" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-205"><a href="#cb15-205" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: write-rescale-function</span></span>
-<span id="cb15-206"><a href="#cb15-206" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-207"><a href="#cb15-207" aria-hidden="true" tabindex="-1"></a>rescale_01 <span class="ot">&lt;-</span> <span class="cf">function</span>(vector){</span>
-<span id="cb15-208"><a href="#cb15-208" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.numeric</span>(vector)) {</span>
-<span id="cb15-209"><a href="#cb15-209" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Error: The input vector must be numeric.&quot;</span>)</span>
-<span id="cb15-210"><a href="#cb15-210" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb15-211"><a href="#cb15-211" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(vector) <span class="sc">&lt;=</span> <span class="dv">1</span>) {</span>
-<span id="cb15-212"><a href="#cb15-212" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Error: The input vector must have more than one element.&quot;</span>)</span>
-<span id="cb15-213"><a href="#cb15-213" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb15-214"><a href="#cb15-214" aria-hidden="true" tabindex="-1"></a>  min_max <span class="ot">&lt;-</span> <span class="fu">range</span>(vector, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb15-215"><a href="#cb15-215" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb15-216"><a href="#cb15-216" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>((vector <span class="sc">-</span> min_max[<span class="dv">1</span>]) <span class="sc">/</span> (min_max[<span class="dv">2</span>] <span class="sc">-</span> min_max[<span class="dv">1</span>]))</span>
-<span id="cb15-217"><a href="#cb15-217" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb15-218"><a href="#cb15-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-219"><a href="#cb15-219" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-220"><a href="#cb15-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-221"><a href="#cb15-221" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb15-222"><a href="#cb15-222" aria-hidden="true" tabindex="-1"></a><span class="fu"># Efficiency </span></span>
-<span id="cb15-223"><a href="#cb15-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-224"><a href="#cb15-224" aria-hidden="true" tabindex="-1"></a>Think about the efficiency of the function you wrote. Are you calling the</span>
-<span id="cb15-225"><a href="#cb15-225" aria-hidden="true" tabindex="-1"></a>**same** function multiple times? You might want to look into the <span class="in">`range()`</span> </span>
-<span id="cb15-226"><a href="#cb15-226" aria-hidden="true" tabindex="-1"></a>function. </span>
-<span id="cb15-227"><a href="#cb15-227" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb15-228"><a href="#cb15-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-229"><a href="#cb15-229" aria-hidden="true" tabindex="-1"></a>**5. Let&#39;s incorporate some input validation into your function. Modify your previous code so that the function stops if ...**</span>
-<span id="cb15-230"><a href="#cb15-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-231"><a href="#cb15-231" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span>**... the input vector is not numeric.**</span>
-<span id="cb15-232"><a href="#cb15-232" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span>**... the length of the input vector is not greater than 1.**</span>
-<span id="cb15-233"><a href="#cb15-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-234"><a href="#cb15-234" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb15-235"><a href="#cb15-235" aria-hidden="true" tabindex="-1"></a><span class="fu"># Modify Previous Code</span></span>
-<span id="cb15-236"><a href="#cb15-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-237"><a href="#cb15-237" aria-hidden="true" tabindex="-1"></a>Do not create a new code chunk here -- simply add these stops to your function</span>
-<span id="cb15-238"><a href="#cb15-238" aria-hidden="true" tabindex="-1"></a>above!</span>
-<span id="cb15-239"><a href="#cb15-239" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb15-240"><a href="#cb15-240" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-241"><a href="#cb15-241" aria-hidden="true" tabindex="-1"></a><span class="fu">## Test Your Function</span></span>
-<span id="cb15-242"><a href="#cb15-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-243"><a href="#cb15-243" aria-hidden="true" tabindex="-1"></a>**6. Run the code below to test your function. Verify that the maximum of your rescaled vector is 1 and the minimum is 0!**</span>
-<span id="cb15-244"><a href="#cb15-244" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-247"><a href="#cb15-247" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-248"><a href="#cb15-248" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: verify-rescale-function</span></span>
-<span id="cb15-249"><a href="#cb15-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-250"><a href="#cb15-250" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">25</span>, <span class="cn">NA</span>)</span>
-<span id="cb15-251"><a href="#cb15-251" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-252"><a href="#cb15-252" aria-hidden="true" tabindex="-1"></a>rescaled <span class="ot">&lt;-</span> <span class="fu">rescale_01</span>(x)</span>
-<span id="cb15-253"><a href="#cb15-253" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(rescaled, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb15-254"><a href="#cb15-254" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(rescaled, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb15-255"><a href="#cb15-255" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-256"><a href="#cb15-256" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-257"><a href="#cb15-257" aria-hidden="true" tabindex="-1"></a>Next, let&#39;s test the function on the <span class="in">`length`</span> column of the <span class="in">`BlackfootFish`</span> data.</span>
-<span id="cb15-258"><a href="#cb15-258" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-259"><a href="#cb15-259" aria-hidden="true" tabindex="-1"></a>**7. The code below makes a histogram of the original values of `length`. Add a plot of the rescaled values of `length`. Output your plots side-by-side, so the reader can confirm the only aspect that has changed is the scale.**</span>
-<span id="cb15-260"><a href="#cb15-260" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-261"><a href="#cb15-261" aria-hidden="true" tabindex="-1"></a>::: callout-warning</span>
-<span id="cb15-262"><a href="#cb15-262" aria-hidden="true" tabindex="-1"></a>This will require you to call your <span class="in">`rescale_01()`</span> function within a <span class="in">`mutate()`</span></span>
-<span id="cb15-263"><a href="#cb15-263" aria-hidden="true" tabindex="-1"></a>statement in order to create a <span class="in">`length_scaled`</span> variable.</span>
-<span id="cb15-264"><a href="#cb15-264" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb15-265"><a href="#cb15-265" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-268"><a href="#cb15-268" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-269"><a href="#cb15-269" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: compare-original-with-rescaled-lengths</span></span>
-<span id="cb15-270"><a href="#cb15-270" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-align: center</span></span>
-<span id="cb15-271"><a href="#cb15-271" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
-<span id="cb15-272"><a href="#cb15-272" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &quot;1: Scaled vs Rescaled Graphs of Fish Length Counts Caught Between 1989-2006 in Helena, Montana&quot;</span></span>
-<span id="cb15-273"><a href="#cb15-273" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-274"><a href="#cb15-274" aria-hidden="true" tabindex="-1"></a>fish_csv <span class="sc">|&gt;</span>  </span>
-<span id="cb15-275"><a href="#cb15-275" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> length)) <span class="sc">+</span> </span>
-<span id="cb15-276"><a href="#cb15-276" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">45</span>) <span class="sc">+</span></span>
-<span id="cb15-277"><a href="#cb15-277" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Original Values of Fish Length (mm)&quot;</span>) <span class="sc">+</span></span>
-<span id="cb15-278"><a href="#cb15-278" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">4000</span>))</span>
-<span id="cb15-279"><a href="#cb15-279" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-280"><a href="#cb15-280" aria-hidden="true" tabindex="-1"></a><span class="co"># Code for Q7 plot.</span></span>
-<span id="cb15-281"><a href="#cb15-281" aria-hidden="true" tabindex="-1"></a>fish_csv <span class="sc">|&gt;</span>  </span>
-<span id="cb15-282"><a href="#cb15-282" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">length_scaled =</span> <span class="fu">rescale_01</span>(length)) <span class="sc">|&gt;</span> </span>
-<span id="cb15-283"><a href="#cb15-283" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> length_scaled)) <span class="sc">+</span> </span>
-<span id="cb15-284"><a href="#cb15-284" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>( <span class="at">binwidth =</span> <span class="fl">0.05</span>, <span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb15-285"><a href="#cb15-285" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb15-286"><a href="#cb15-286" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Rescaled Values of Fish Length&quot;</span>,</span>
-<span id="cb15-287"><a href="#cb15-287" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Count&quot;</span>) <span class="sc">+</span></span>
-<span id="cb15-288"><a href="#cb15-288" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4000</span>))</span>
+<span id="cb15-151"><a href="#cb15-151" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-152"><a href="#cb15-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-153"><a href="#cb15-153" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-154"><a href="#cb15-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-155"><a href="#cb15-155" aria-hidden="true" tabindex="-1"></a><span class="fu">## Rescaling the Data</span></span>
+<span id="cb15-156"><a href="#cb15-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-157"><a href="#cb15-157" aria-hidden="true" tabindex="-1"></a>If I wanted to rescale every quantitative variable in my dataset so that they</span>
+<span id="cb15-158"><a href="#cb15-158" aria-hidden="true" tabindex="-1"></a>only have values between 0 and 1, I could use this formula:</span>
+<span id="cb15-159"><a href="#cb15-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-160"><a href="#cb15-160" aria-hidden="true" tabindex="-1"></a>&lt;/br&gt;</span>
+<span id="cb15-161"><a href="#cb15-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-162"><a href="#cb15-162" aria-hidden="true" tabindex="-1"></a>$$y_{scaled} = \frac{y_i - min<span class="sc">\{</span>y_1, y_2,..., y_n<span class="sc">\}</span>}{max<span class="sc">\{</span>y_1, y_2,..., y_n<span class="sc">\}</span> </span>
+<span id="cb15-163"><a href="#cb15-163" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>min<span class="sc">\{</span>y_1, y_2,..., y_n<span class="sc">\}</span>}$$</span>
+<span id="cb15-164"><a href="#cb15-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-165"><a href="#cb15-165" aria-hidden="true" tabindex="-1"></a>&lt;/br&gt;</span>
+<span id="cb15-166"><a href="#cb15-166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-167"><a href="#cb15-167" aria-hidden="true" tabindex="-1"></a>I might write the following <span class="in">`R`</span> code to carry out the rescaling procedure for the <span class="in">`length`</span> and <span class="in">`weight`</span> columns of the <span class="in">`BlackfoorFish`</span> data:</span>
+<span id="cb15-168"><a href="#cb15-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-171"><a href="#cb15-171" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-172"><a href="#cb15-172" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb15-173"><a href="#cb15-173" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb15-174"><a href="#cb15-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-175"><a href="#cb15-175" aria-hidden="true" tabindex="-1"></a>fish <span class="ot">&lt;-</span> fish_csv <span class="sc">|&gt;</span> </span>
+<span id="cb15-176"><a href="#cb15-176" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">length =</span> (length <span class="sc">-</span> <span class="fu">min</span>(length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> </span>
+<span id="cb15-177"><a href="#cb15-177" aria-hidden="true" tabindex="-1"></a>           (<span class="fu">max</span>(length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">-</span> <span class="fu">min</span>(length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)), </span>
+<span id="cb15-178"><a href="#cb15-178" aria-hidden="true" tabindex="-1"></a>         <span class="at">weight =</span> (weight <span class="sc">-</span> <span class="fu">min</span>(weight, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> </span>
+<span id="cb15-179"><a href="#cb15-179" aria-hidden="true" tabindex="-1"></a>           (<span class="fu">max</span>(weight, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">-</span> <span class="fu">min</span>(length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)))</span>
+<span id="cb15-180"><a href="#cb15-180" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-181"><a href="#cb15-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-182"><a href="#cb15-182" aria-hidden="true" tabindex="-1"></a>This process of duplicating an action multiple times can make it difficult to</span>
+<span id="cb15-183"><a href="#cb15-183" aria-hidden="true" tabindex="-1"></a>understand the intent of the process. *Additionally, it can make it very difficult to spot mistakes.*</span>
+<span id="cb15-184"><a href="#cb15-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-185"><a href="#cb15-185" aria-hidden="true" tabindex="-1"></a>**3. What is the mistake I made in the above rescaling code?**</span>
+<span id="cb15-186"><a href="#cb15-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-187"><a href="#cb15-187" aria-hidden="true" tabindex="-1"></a>The mistake is the use of the length variable to calculate the rescaled weight.</span>
+<span id="cb15-188"><a href="#cb15-188" aria-hidden="true" tabindex="-1"></a>It should be corrected to:</span>
+<span id="cb15-189"><a href="#cb15-189" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb15-190"><a href="#cb15-190" aria-hidden="true" tabindex="-1"></a>`weight = (weight - min(weight, na.rm = TRUE)) / </span>
+<span id="cb15-191"><a href="#cb15-191" aria-hidden="true" tabindex="-1"></a>           (max(weight, na.rm = TRUE) - min(weight, na.rm = TRUE)))`</span>
+<span id="cb15-192"><a href="#cb15-192" aria-hidden="true" tabindex="-1"></a>           </span>
+<span id="cb15-193"><a href="#cb15-193" aria-hidden="true" tabindex="-1"></a>When you find yourself copy-pasting lines of code, it&#39;s time to write a</span>
+<span id="cb15-194"><a href="#cb15-194" aria-hidden="true" tabindex="-1"></a>function, instead!</span>
+<span id="cb15-195"><a href="#cb15-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-196"><a href="#cb15-196" aria-hidden="true" tabindex="-1"></a>**4. Transform the repeated process above into a `rescale_01()` function. Your function should...**</span>
+<span id="cb15-197"><a href="#cb15-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-198"><a href="#cb15-198" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span>**... take a single vector as input.**</span>
+<span id="cb15-199"><a href="#cb15-199" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span>**... return the rescaled vector.**</span>
+<span id="cb15-200"><a href="#cb15-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-203"><a href="#cb15-203" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-204"><a href="#cb15-204" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: write-rescale-function</span></span>
+<span id="cb15-205"><a href="#cb15-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-206"><a href="#cb15-206" aria-hidden="true" tabindex="-1"></a>rescale_01 <span class="ot">&lt;-</span> <span class="cf">function</span>(vector){</span>
+<span id="cb15-207"><a href="#cb15-207" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.numeric</span>(vector)) {</span>
+<span id="cb15-208"><a href="#cb15-208" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Error: The input vector must be numeric.&quot;</span>)</span>
+<span id="cb15-209"><a href="#cb15-209" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb15-210"><a href="#cb15-210" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(vector) <span class="sc">&lt;=</span> <span class="dv">1</span>) {</span>
+<span id="cb15-211"><a href="#cb15-211" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Error: The input vector must have more than one element.&quot;</span>)</span>
+<span id="cb15-212"><a href="#cb15-212" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb15-213"><a href="#cb15-213" aria-hidden="true" tabindex="-1"></a>  min_max <span class="ot">&lt;-</span> <span class="fu">range</span>(vector, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-214"><a href="#cb15-214" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-215"><a href="#cb15-215" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>((vector <span class="sc">-</span> min_max[<span class="dv">1</span>]) <span class="sc">/</span> (min_max[<span class="dv">2</span>] <span class="sc">-</span> min_max[<span class="dv">1</span>]))</span>
+<span id="cb15-216"><a href="#cb15-216" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb15-217"><a href="#cb15-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-218"><a href="#cb15-218" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-219"><a href="#cb15-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-220"><a href="#cb15-220" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb15-221"><a href="#cb15-221" aria-hidden="true" tabindex="-1"></a><span class="fu"># Efficiency </span></span>
+<span id="cb15-222"><a href="#cb15-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-223"><a href="#cb15-223" aria-hidden="true" tabindex="-1"></a>Think about the efficiency of the function you wrote. Are you calling the</span>
+<span id="cb15-224"><a href="#cb15-224" aria-hidden="true" tabindex="-1"></a>**same** function multiple times? You might want to look into the <span class="in">`range()`</span> </span>
+<span id="cb15-225"><a href="#cb15-225" aria-hidden="true" tabindex="-1"></a>function. </span>
+<span id="cb15-226"><a href="#cb15-226" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb15-227"><a href="#cb15-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-228"><a href="#cb15-228" aria-hidden="true" tabindex="-1"></a>**5. Let&#39;s incorporate some input validation into your function. Modify your previous code so that the function stops if ...**</span>
+<span id="cb15-229"><a href="#cb15-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-230"><a href="#cb15-230" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span>**... the input vector is not numeric.**</span>
+<span id="cb15-231"><a href="#cb15-231" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span>**... the length of the input vector is not greater than 1.**</span>
+<span id="cb15-232"><a href="#cb15-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-233"><a href="#cb15-233" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb15-234"><a href="#cb15-234" aria-hidden="true" tabindex="-1"></a><span class="fu"># Modify Previous Code</span></span>
+<span id="cb15-235"><a href="#cb15-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-236"><a href="#cb15-236" aria-hidden="true" tabindex="-1"></a>Do not create a new code chunk here -- simply add these stops to your function</span>
+<span id="cb15-237"><a href="#cb15-237" aria-hidden="true" tabindex="-1"></a>above!</span>
+<span id="cb15-238"><a href="#cb15-238" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb15-239"><a href="#cb15-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-240"><a href="#cb15-240" aria-hidden="true" tabindex="-1"></a><span class="fu">## Test Your Function</span></span>
+<span id="cb15-241"><a href="#cb15-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-242"><a href="#cb15-242" aria-hidden="true" tabindex="-1"></a>**6. Run the code below to test your function. Verify that the maximum of your rescaled vector is 1 and the minimum is 0!**</span>
+<span id="cb15-243"><a href="#cb15-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-246"><a href="#cb15-246" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-247"><a href="#cb15-247" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: verify-rescale-function</span></span>
+<span id="cb15-248"><a href="#cb15-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-249"><a href="#cb15-249" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">25</span>, <span class="cn">NA</span>)</span>
+<span id="cb15-250"><a href="#cb15-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-251"><a href="#cb15-251" aria-hidden="true" tabindex="-1"></a>rescaled <span class="ot">&lt;-</span> <span class="fu">rescale_01</span>(x)</span>
+<span id="cb15-252"><a href="#cb15-252" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(rescaled, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-253"><a href="#cb15-253" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(rescaled, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-254"><a href="#cb15-254" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-255"><a href="#cb15-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-256"><a href="#cb15-256" aria-hidden="true" tabindex="-1"></a>Next, let&#39;s test the function on the <span class="in">`length`</span> column of the <span class="in">`BlackfootFish`</span> data.</span>
+<span id="cb15-257"><a href="#cb15-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-258"><a href="#cb15-258" aria-hidden="true" tabindex="-1"></a>**7. The code below makes a histogram of the original values of `length`. Add a plot of the rescaled values of `length`. Output your plots side-by-side, so the reader can confirm the only aspect that has changed is the scale.**</span>
+<span id="cb15-259"><a href="#cb15-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-260"><a href="#cb15-260" aria-hidden="true" tabindex="-1"></a>::: callout-warning</span>
+<span id="cb15-261"><a href="#cb15-261" aria-hidden="true" tabindex="-1"></a>This will require you to call your <span class="in">`rescale_01()`</span> function within a <span class="in">`mutate()`</span></span>
+<span id="cb15-262"><a href="#cb15-262" aria-hidden="true" tabindex="-1"></a>statement in order to create a <span class="in">`length_scaled`</span> variable.</span>
+<span id="cb15-263"><a href="#cb15-263" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb15-264"><a href="#cb15-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-267"><a href="#cb15-267" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-268"><a href="#cb15-268" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: compare-original-with-rescaled-lengths</span></span>
+<span id="cb15-269"><a href="#cb15-269" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-align: center</span></span>
+<span id="cb15-270"><a href="#cb15-270" aria-hidden="true" tabindex="-1"></a><span class="co">#| layout-ncol: 2</span></span>
+<span id="cb15-271"><a href="#cb15-271" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: &quot;1: Scaled vs Rescaled Graphs of Fish Length Counts Caught Between 1989-2006 in Helena, Montana&quot;</span></span>
+<span id="cb15-272"><a href="#cb15-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-273"><a href="#cb15-273" aria-hidden="true" tabindex="-1"></a>fish_csv <span class="sc">|&gt;</span>  </span>
+<span id="cb15-274"><a href="#cb15-274" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> length)) <span class="sc">+</span> </span>
+<span id="cb15-275"><a href="#cb15-275" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">45</span>) <span class="sc">+</span></span>
+<span id="cb15-276"><a href="#cb15-276" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Original Values of Fish Length (mm)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb15-277"><a href="#cb15-277" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">4000</span>))</span>
+<span id="cb15-278"><a href="#cb15-278" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-279"><a href="#cb15-279" aria-hidden="true" tabindex="-1"></a><span class="co"># Code for Q7 plot.</span></span>
+<span id="cb15-280"><a href="#cb15-280" aria-hidden="true" tabindex="-1"></a>fish_csv <span class="sc">|&gt;</span>  </span>
+<span id="cb15-281"><a href="#cb15-281" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">length_scaled =</span> <span class="fu">rescale_01</span>(length)) <span class="sc">|&gt;</span> </span>
+<span id="cb15-282"><a href="#cb15-282" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> length_scaled)) <span class="sc">+</span> </span>
+<span id="cb15-283"><a href="#cb15-283" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>( <span class="at">binwidth =</span> <span class="fl">0.05</span>, <span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb15-284"><a href="#cb15-284" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb15-285"><a href="#cb15-285" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Rescaled Values of Fish Length&quot;</span>,</span>
+<span id="cb15-286"><a href="#cb15-286" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Count&quot;</span>) <span class="sc">+</span></span>
+<span id="cb15-287"><a href="#cb15-287" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4000</span>))</span>
+<span id="cb15-288"><a href="#cb15-288" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-289"><a href="#cb15-289" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-290"><a href="#cb15-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-291"><a href="#cb15-291" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-292"><a href="#cb15-292" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-293"><a href="#cb15-293" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb15-294"><a href="#cb15-294" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Set the y-axis limits for both plots to go from 0 to 4000 to allow for direct comparison across plots.</span>
-<span id="cb15-295"><a href="#cb15-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-296"><a href="#cb15-296" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Pay attention to <span class="in">`binwidth`</span>!</span>
-<span id="cb15-297"><a href="#cb15-297" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-298"><a href="#cb15-298" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Use a Quarto code chunk option to put the plots side-by-side.</span>
-<span id="cb15-299"><a href="#cb15-299" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb15-300"><a href="#cb15-300" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-301"><a href="#cb15-301" aria-hidden="true" tabindex="-1"></a><span class="fu">## Use Variables within a Dataset</span></span>
-<span id="cb15-302"><a href="#cb15-302" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-303"><a href="#cb15-303" aria-hidden="true" tabindex="-1"></a>Suppose you would like for your <span class="in">`rescale()`</span> function to perform operations on a **variable within a dataset**. Ideally, your function would take in a data</span>
-<span id="cb15-304"><a href="#cb15-304" aria-hidden="true" tabindex="-1"></a>frame and a variable name as inputs and return a data frame where the variable</span>
-<span id="cb15-305"><a href="#cb15-305" aria-hidden="true" tabindex="-1"></a>has been rescaled.</span>
-<span id="cb15-306"><a href="#cb15-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-307"><a href="#cb15-307" aria-hidden="true" tabindex="-1"></a>**8. Create a `rescale_column()` function that accepts two arguments:**</span>
-<span id="cb15-308"><a href="#cb15-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-309"><a href="#cb15-309" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span>**a dataframe**</span>
-<span id="cb15-310"><a href="#cb15-310" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span>**the name(s) of the variable(s) to be rescaled**</span>
-<span id="cb15-311"><a href="#cb15-311" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-312"><a href="#cb15-312" aria-hidden="true" tabindex="-1"></a>**The body of the function should call the original `rescale_01()` function you wrote previously. Your solution MUST use one of the `rlang` options from class.**</span>
-<span id="cb15-313"><a href="#cb15-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-314"><a href="#cb15-314" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb15-315"><a href="#cb15-315" aria-hidden="true" tabindex="-1"></a>If you are struggling with this task, I recommend looking back over the </span>
-<span id="cb15-316"><a href="#cb15-316" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">data frame functions</span><span class="co">](https://r4ds.hadley.nz/functions.html#data-frame-functions)</span></span>
-<span id="cb15-317"><a href="#cb15-317" aria-hidden="true" tabindex="-1"></a>section of R for Data Science!</span>
-<span id="cb15-318"><a href="#cb15-318" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb15-319"><a href="#cb15-319" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-322"><a href="#cb15-322" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-323"><a href="#cb15-323" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: rescale-data-frame-function</span></span>
-<span id="cb15-324"><a href="#cb15-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-325"><a href="#cb15-325" aria-hidden="true" tabindex="-1"></a>rescale_column <span class="ot">&lt;-</span> <span class="cf">function</span>(df, columns) {</span>
-<span id="cb15-326"><a href="#cb15-326" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.data.frame</span>(df)) {</span>
-<span id="cb15-327"><a href="#cb15-327" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;The input `df` must be a data frame.&quot;</span>)</span>
-<span id="cb15-328"><a href="#cb15-328" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb15-329"><a href="#cb15-329" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.character</span>(columns) <span class="sc">||</span> <span class="sc">!</span><span class="fu">all</span>(columns <span class="sc">%in%</span> <span class="fu">colnames</span>(df))) {</span>
-<span id="cb15-330"><a href="#cb15-330" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;`columns` must be a character vector of valid column names in `df`.&quot;</span>)</span>
-<span id="cb15-331"><a href="#cb15-331" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb15-332"><a href="#cb15-332" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb15-333"><a href="#cb15-333" aria-hidden="true" tabindex="-1"></a>  columns <span class="ot">&lt;-</span> rlang<span class="sc">::</span><span class="fu">enquo</span>(columns)</span>
-<span id="cb15-334"><a href="#cb15-334" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb15-335"><a href="#cb15-335" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(df <span class="sc">|&gt;</span></span>
-<span id="cb15-336"><a href="#cb15-336" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="fu">across</span>(</span>
-<span id="cb15-337"><a href="#cb15-337" aria-hidden="true" tabindex="-1"></a>      <span class="sc">!!</span>columns,</span>
-<span id="cb15-338"><a href="#cb15-338" aria-hidden="true" tabindex="-1"></a>      rescale_01,</span>
-<span id="cb15-339"><a href="#cb15-339" aria-hidden="true" tabindex="-1"></a>      <span class="at">.names =</span> <span class="st">&quot;{.col}_rescaled&quot;</span></span>
-<span id="cb15-340"><a href="#cb15-340" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb15-341"><a href="#cb15-341" aria-hidden="true" tabindex="-1"></a>    ))</span>
-<span id="cb15-342"><a href="#cb15-342" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb15-343"><a href="#cb15-343" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-344"><a href="#cb15-344" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-345"><a href="#cb15-345" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-346"><a href="#cb15-346" aria-hidden="true" tabindex="-1"></a>**9. Use your `rescale_column()` function to rescale *both* the `length` and `weight` columns.**</span>
-<span id="cb15-347"><a href="#cb15-347" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-348"><a href="#cb15-348" aria-hidden="true" tabindex="-1"></a>::: callout-warning</span>
-<span id="cb15-349"><a href="#cb15-349" aria-hidden="true" tabindex="-1"></a>I expect that you carry out this process by calling the <span class="in">`rescale_column()`</span> function only ONE time!</span>
-<span id="cb15-350"><a href="#cb15-350" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb15-351"><a href="#cb15-351" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-354"><a href="#cb15-354" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-355"><a href="#cb15-355" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: rescale-two-columns</span></span>
-<span id="cb15-356"><a href="#cb15-356" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-357"><a href="#cb15-357" aria-hidden="true" tabindex="-1"></a><span class="fu">rescale_column</span>(fish_csv, <span class="fu">c</span>(<span class="st">&quot;length&quot;</span>, <span class="st">&quot;weight&quot;</span>))</span>
-<span id="cb15-358"><a href="#cb15-358" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-359"><a href="#cb15-359" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-290"><a href="#cb15-290" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-291"><a href="#cb15-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-292"><a href="#cb15-292" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb15-293"><a href="#cb15-293" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Set the y-axis limits for both plots to go from 0 to 4000 to allow for direct comparison across plots.</span>
+<span id="cb15-294"><a href="#cb15-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-295"><a href="#cb15-295" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Pay attention to <span class="in">`binwidth`</span>!</span>
+<span id="cb15-296"><a href="#cb15-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-297"><a href="#cb15-297" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Use a Quarto code chunk option to put the plots side-by-side.</span>
+<span id="cb15-298"><a href="#cb15-298" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb15-299"><a href="#cb15-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-300"><a href="#cb15-300" aria-hidden="true" tabindex="-1"></a><span class="fu">## Use Variables within a Dataset</span></span>
+<span id="cb15-301"><a href="#cb15-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-302"><a href="#cb15-302" aria-hidden="true" tabindex="-1"></a>Suppose you would like for your <span class="in">`rescale()`</span> function to perform operations on a **variable within a dataset**. Ideally, your function would take in a data</span>
+<span id="cb15-303"><a href="#cb15-303" aria-hidden="true" tabindex="-1"></a>frame and a variable name as inputs and return a data frame where the variable</span>
+<span id="cb15-304"><a href="#cb15-304" aria-hidden="true" tabindex="-1"></a>has been rescaled.</span>
+<span id="cb15-305"><a href="#cb15-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-306"><a href="#cb15-306" aria-hidden="true" tabindex="-1"></a>**8. Create a `rescale_column()` function that accepts two arguments:**</span>
+<span id="cb15-307"><a href="#cb15-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-308"><a href="#cb15-308" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span>**a dataframe**</span>
+<span id="cb15-309"><a href="#cb15-309" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span>**the name(s) of the variable(s) to be rescaled**</span>
+<span id="cb15-310"><a href="#cb15-310" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-311"><a href="#cb15-311" aria-hidden="true" tabindex="-1"></a>**The body of the function should call the original `rescale_01()` function you wrote previously. Your solution MUST use one of the `rlang` options from class.**</span>
+<span id="cb15-312"><a href="#cb15-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-313"><a href="#cb15-313" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb15-314"><a href="#cb15-314" aria-hidden="true" tabindex="-1"></a>If you are struggling with this task, I recommend looking back over the </span>
+<span id="cb15-315"><a href="#cb15-315" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">data frame functions</span><span class="co">](https://r4ds.hadley.nz/functions.html#data-frame-functions)</span></span>
+<span id="cb15-316"><a href="#cb15-316" aria-hidden="true" tabindex="-1"></a>section of R for Data Science!</span>
+<span id="cb15-317"><a href="#cb15-317" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb15-318"><a href="#cb15-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-321"><a href="#cb15-321" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-322"><a href="#cb15-322" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: rescale-data-frame-function</span></span>
+<span id="cb15-323"><a href="#cb15-323" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-324"><a href="#cb15-324" aria-hidden="true" tabindex="-1"></a>rescale_column <span class="ot">&lt;-</span> <span class="cf">function</span>(df, columns) {</span>
+<span id="cb15-325"><a href="#cb15-325" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.data.frame</span>(df)) {</span>
+<span id="cb15-326"><a href="#cb15-326" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;The input `df` must be a data frame.&quot;</span>)</span>
+<span id="cb15-327"><a href="#cb15-327" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb15-328"><a href="#cb15-328" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.character</span>(columns) <span class="sc">||</span> <span class="sc">!</span><span class="fu">all</span>(columns <span class="sc">%in%</span> <span class="fu">colnames</span>(df))) {</span>
+<span id="cb15-329"><a href="#cb15-329" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;`columns` must be a character vector of valid column names in `df`.&quot;</span>)</span>
+<span id="cb15-330"><a href="#cb15-330" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb15-331"><a href="#cb15-331" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-332"><a href="#cb15-332" aria-hidden="true" tabindex="-1"></a>  columns <span class="ot">&lt;-</span> rlang<span class="sc">::</span><span class="fu">enquo</span>(columns)</span>
+<span id="cb15-333"><a href="#cb15-333" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-334"><a href="#cb15-334" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(df <span class="sc">|&gt;</span></span>
+<span id="cb15-335"><a href="#cb15-335" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="fu">across</span>(</span>
+<span id="cb15-336"><a href="#cb15-336" aria-hidden="true" tabindex="-1"></a>      <span class="sc">!!</span>columns,</span>
+<span id="cb15-337"><a href="#cb15-337" aria-hidden="true" tabindex="-1"></a>      rescale_01,</span>
+<span id="cb15-338"><a href="#cb15-338" aria-hidden="true" tabindex="-1"></a>      <span class="at">.names =</span> <span class="st">&quot;{.col}_rescaled&quot;</span></span>
+<span id="cb15-339"><a href="#cb15-339" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb15-340"><a href="#cb15-340" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb15-341"><a href="#cb15-341" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb15-342"><a href="#cb15-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-343"><a href="#cb15-343" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-344"><a href="#cb15-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-345"><a href="#cb15-345" aria-hidden="true" tabindex="-1"></a>**9. Use your `rescale_column()` function to rescale *both* the `length` and `weight` columns.**</span>
+<span id="cb15-346"><a href="#cb15-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-347"><a href="#cb15-347" aria-hidden="true" tabindex="-1"></a>::: callout-warning</span>
+<span id="cb15-348"><a href="#cb15-348" aria-hidden="true" tabindex="-1"></a>I expect that you carry out this process by calling the <span class="in">`rescale_column()`</span> function only ONE time!</span>
+<span id="cb15-349"><a href="#cb15-349" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb15-350"><a href="#cb15-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-353"><a href="#cb15-353" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-354"><a href="#cb15-354" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: rescale-two-columns</span></span>
+<span id="cb15-355"><a href="#cb15-355" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-356"><a href="#cb15-356" aria-hidden="true" tabindex="-1"></a><span class="fu">rescale_column</span>(fish_csv, <span class="fu">c</span>(<span class="st">&quot;length&quot;</span>, <span class="st">&quot;weight&quot;</span>))</span>
+<span id="cb15-357"><a href="#cb15-357" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-358"><a href="#cb15-358" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

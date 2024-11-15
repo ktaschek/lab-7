@@ -60,42 +60,45 @@ measurement errors.
 ```{r}
 #| label: find-missing-values
 
-library(dplyr)
+# Previous Submission
 
-observations_with_missing <- fish_csv |>
-  filter(
-    if_any(
-      everything(),
-      is.na
-      )
-    ) |>
-  summarise(total_observations_with_missing = n()) |>
-  pull(total_observations_with_missing)
+# observations_with_missing <- fish_csv |>
+#   filter(
+#     if_any(
+#       everything(),
+#       is.na
+#       )
+#     ) |>
+#   summarise(total_observations_with_missing = n()) |>
+#   pull(total_observations_with_missing)
+# 
+# variables_with_missing <- fish_csv |>
+#   summarise(
+#     across(
+#       everything(),
+#       ~ any(is.na(.))
+#       )
+#     ) |>
+#   pivot_longer(
+#     cols = everything(),
+#     names_to = "variable",
+#     values_to = "has_missing"
+#     ) |>
+#   filter(has_missing) |>
+#   pull(variable)
+# 
+# list(
+#   obs_missing = observations_with_missing,
+#   vars_w_missing = variables_with_missing
+# )
 
-variables_with_missing <- fish_csv |>
+fish_csv |>
   summarise(
     across(
       everything(),
-      ~ any(is.na(.))
-      )
-    ) |>
-  pivot_longer(
-    cols = everything(),
-    names_to = "variable",
-    values_to = "has_missing"
-    ) |>
-  filter(has_missing) |>
-  pull(variable)
-
-list(
-  obs_missing = observations_with_missing,
-  vars_w_missing = variables_with_missing
-)
-
-
-
-
-
+      ~ sum(is.na(.))
+    )
+  ) 
 ```
 
 **2. Create ONE thoughtful visualization that explores the frequency of missing values across the different years, sections, and trips.**
@@ -105,27 +108,24 @@ list(
 
 
 fish_csv |>
-  group_by(section, year, trip) |>
   mutate(
-    num_missing = sum(if_any(
-      everything(),
-      is.na
-      )),
-    total_count = n(),
-    percent_missing = (100 * num_missing) / total_count,
-    .groups = "drop"
-    ) |>
+    trip = fct_recode(as.factor(trip),
+      "Trip 1" = "1",
+      "Trip 2" = "2"
+    )
+  ) |>
+  filter(
+    if_any(everything(), is.na)
+  ) |>
   ggplot(
     mapping = aes(
       x = year,
-      y = section,
-      fill = percent_missing
+      fill = section
     )
   ) +
-  geom_tile() +
-  scale_fill_gradient(
-    low = "grey",
-    high = "steelblue"
+  geom_bar(
+    stat = "count",
+    position = "stack"
   ) +
   facet_wrap(~ trip) +
   labs(
@@ -138,8 +138,7 @@ fish_csv |>
   ) +
   theme(
     axis.text.x = element_text(
-      angle = 45,
-      hjust = 1
+      size = 8
     ))
 
 
