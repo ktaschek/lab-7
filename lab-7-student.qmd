@@ -133,7 +133,7 @@ fish_csv |>
     y = "",
     subtitle = "Section",
     title = "Missing Values by section and trip over time from the Blackfoot Trout data from Helena, Montana",
-    fill = "Number Missing (%)"
+    fill = "Number Missing"
 
   ) +
   theme(
